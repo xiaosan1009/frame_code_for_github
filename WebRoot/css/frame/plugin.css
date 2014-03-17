@@ -1,0 +1,34 @@
+.commonDivClass {
+	padding:5px;
+	margin: 5px;
+	border-width: 1px;
+	border-style:solid;
+	border-color: #000000;
+}
+/*小图标公共*/
+.icon{
+	background:url("../../images/life/sidebar-icon.png") no-repeat transparent;
+	font-size:14px;
+	margin-left:6px;
+	padding:14px 0 14px 77px;
+	background-position:0 -9px;
+}
+/*小图标话费充值*/
+.mobile{
+}
+/*小图标固话费*/
+.tel{
+	background-position:0 -62px;
+}
+/*小图标19call电话*/
+.call{
+	background-position:0 -119px;
+}
+/*小图标信用卡还款*/
+.credit{
+	background-position:0 -173px;
+}
+/*小图标水电煤缴费*/
+.weg{
+	background-position:0 -228px;
+}

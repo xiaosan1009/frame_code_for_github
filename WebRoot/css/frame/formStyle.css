@@ -1,0 +1,145 @@
+select {
+	font-size: 14;
+}
+.formTr {
+	vertical-align:middle;
+	height: 30px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	text-align: center;
+	margin: 15px auto;
+}
+
+.formMesRight {
+	width:430px;
+	float: right;
+	vertical-align: middle;
+	text-align: left;
+}
+
+.formBottom {
+	margin-bottom: 20px;
+}
+
+.formTh {
+	width: 86px;
+	font-size: 14px;
+	font-weight: bold;
+	height:30px;
+	padding-top: 4px;
+	display: inline;
+}
+
+.formMesTr {
+	width: 590px;
+}
+
+.formMesLeft {
+	width: 350;
+	float: left;
+	text-align: right;
+	margin-right: 10px;
+}
+
+.formMesTh {
+	width: 220px;
+	text-align: left;
+}
+
+.formMesMst {
+	width: 350px;
+	font-size: 14px;
+	text-align: left;
+	color: #f19d5f;
+	font-weight: bold;
+	margin-left: 10px;
+	height: 30px;
+	vertical-align: middle;
+}
+
+.formMesErr {
+	width: 150px;
+	font-size: 14px;
+	text-align: left;
+	color: red;
+	font-weight: bold;
+	margin-left: 10px;
+	height: 30px;
+	vertical-align: middle;
+}
+
+.formTd {
+	width: 220px;
+	padding: 4px;
+	border: 1px solid #838383;
+	height: 30px;
+	line-height: 20px;
+	font-size: 14px;
+	font-weight: 700;
+}
+.btn {
+	width: 80px;
+	height: 29px;
+	text-align: center;
+	cursor: pointer;
+	border: 0;
+	padding: 0;
+	font-weight: 700;
+	font-size: 14px;
+	color: #2B2B2B;
+	display: inline-block;
+	vertical-align: baseline;
+	line-height: 29px;
+	text-decoration: none;
+	background-image: url(../../img/frame/common/common_icon.gif);
+	background-position: -432px 0;
+}
+
+.btn:link {
+	width: 80px;
+	background-position: -432px 0;
+}
+
+.btn:active {
+	width: 80px;
+	background-position: -432px 0;
+}
+
+.btn:hover {
+	width: 80px;
+	background-position: -432px -36px
+}
+
+#formMain {
+	margin: 0 auto;
+	margin-top: 20px;
+}
+#formHeader {
+	width: 300px;
+	color: #fbd073;
+	font-weight: bold;
+	font-size: 14;
+}
+#searchBar {
+	width: 1100px;
+	border: 1px solid #FF0000; 
+	padding: 10px;
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	height: 30px;
+}
+#searchBarLeft {
+	float:left;
+	margin-top: 2px;
+}
+#searchBarRight {
+	float: right;
+}
+.searchBarLabel {
+	line-height: 18px;
+	height: 20px;
+}
+.searchBarWidgetMagin {
+	margin-right: 10px;
+}

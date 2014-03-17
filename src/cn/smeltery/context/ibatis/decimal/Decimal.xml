@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Decimal">
+	
+	<insert id="insertDecimalInfo" parameterClass="java.util.Map">
+		INSERT INTO smeltery_decimal_info(
+			count, 
+			price, 
+			operator_id
+		) 
+		VALUES(
+			#count#, 
+			#price#, 
+			#OPERATOR_ID#
+		)
+	</insert>
+	
+	<select id="getDecimalInfo" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	id,
+	      	count, 
+	      	price
+	    FROM 
+	    	smeltery_decimal_info 
+	    WHERE 
+	    	del_flg = '0'
+	</select>
+	
+	<update id="updateDecimalInfo" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_decimal_info 
+		SET 
+			count=#count#,
+			price=#price#,
+			operator_id=#OPERATOR_ID#,
+			update_date=SYSDATE
+		WHERE 
+			id = #id#
+	</update>
+</sqlMap>

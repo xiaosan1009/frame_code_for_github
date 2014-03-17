@@ -1,0 +1,15 @@
+.tip {
+	width:auto;
+	position: absolute;
+	z-index: 999;
+	left: -9999px;
+	background-color: #dedede;
+	padding: 5px;
+	border: 1px solid #fff;
+}
+.tip p {
+	color: #fff;
+	background-color: #222;
+	padding: 7px 7px;
+	margin: 0;
+}

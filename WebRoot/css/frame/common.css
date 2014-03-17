@@ -1,0 +1,472 @@
+/*-- 全体样式 --*/
+body {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+body.bodyIncenter {
+	margin: auto;
+}
+
+fieldset {
+	border: solid 2px ridge;
+}
+
+legend {
+	color: #000000;
+}
+
+/*-- 内容部分 --*/ /* 主表示区 */
+body.contentBody {
+	margin: 0;
+	font-weight: normal;
+	font-style: normal;
+	color: #000;
+	background: #fff;
+	font-size: 12px;
+	line-height: 166.6%;
+	text-align: center;
+	background: -webkit-linear-gradient(top, #fafad2, #ffffff);
+	filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#fafad2,endColorStr=#ffffff);
+}
+
+.contentFrameClass {
+	position: absolute;
+	top: 146px;
+	left: 0px;
+	width: 1275px;
+	height: 814px;;
+	z-index: 901;
+}
+
+/* 共通按钮 */ /* 普通按钮 */
+.commonBtn {
+	width: 155px;
+	height: 22px;
+	vertical-align: middle;
+	align: center;
+	font-size: 14px;
+}
+
+/* 登录，取消按钮 */
+.commonBtn2 {
+	width: 155px;
+	height: 26px;
+	vertical-align: middle;
+	align: center;
+	font-size: 16px;
+}
+
+/* 普通小按钮 */
+.commonBtn3 {
+	width: 100px;
+	height: 22px;
+	vertical-align: middle;
+	align: center;
+	font-size: 14px;
+}
+
+/* 普通最小按钮 */
+.commonBtnSmall {
+	width: 60px;
+	height: 22px;
+	vertical-align: middle;
+	align: center;
+	font-size: 14px;
+}
+
+/* 表格头部 */
+.headerColor {
+	background-color: #3066a6;
+	color: #ffffff;
+	font-size: 12px;
+	text-align: center;
+}
+
+.glayerOnClass {
+	display: block;
+	position: absolute;
+	z-index: 1500;
+	top: 0px;
+	left: 0px;
+	rigth: 0px;
+	width: 0;
+	height: 0;
+	margin-top: 0px;
+	filter: alpha(opacity =   80);
+	opacity: .7;
+}
+
+.glayerOffClass {
+	top: 0px;
+	left: 0px;
+	rigth: 0px;
+	width: 0;
+	height: 0;
+	display: none;
+}
+
+.loadingSingleClass {
+	background: white url('../../img/frame/indicator.gif') right center
+		no-repeat;
+}
+
+.loadingOnClass {
+	display: none;
+	position: absolute;
+	z-index: 1500;
+	top: 0px;
+	left: 0px;
+	rigth: 0px;
+	width: 16px;
+	height: 16px;
+	margin: 0px;
+	filter: alpha(opacity =   80);
+}
+
+.loadingOffClass {
+	top: 0px;
+	left: 0px;
+	rigth: 0px;
+	width: 16px;
+	height: 16px;
+	display: none;
+}
+
+.glayerOnDialogClass {
+	display: block;
+	position: absolute;
+	z-index: 1500;
+	top: 0px;
+	left: 0px;
+	rigth: 0px;
+	width: 836px;
+	height: 720px;
+	margin-top: 0px;
+	filter: alpha(opacity =   80);
+}
+
+.glayerOnDialog2Class {
+	display: block;
+	position: absolute;
+	z-index: 1500;
+	top: 0px;
+	left: 0px;
+	rigth: 0px;
+	width: 620px;
+	height: 750px;
+	margin-top: 0px;
+	filter: alpha(opacity =   80);
+}
+
+.glayerOffDialogClass {
+	top: 0px;
+	left: 0px;
+	rigth: 0px;
+	width: 836px;
+	height: 720px;
+	display: none;
+}
+
+/* 表格 */
+table.tableStyle { /* 防止画面崩溃 */
+	table-layout: fixed;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	border-collapse: collapse;
+}
+
+table.tableStyle tr {
+	height: 40px;
+}
+
+table.tableStyle td {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	padding: 0px;
+}
+
+/* 表格 */
+table.autoTableStyle { /* 防止画面崩溃 */
+	table-layout: fixed;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	border-collapse: collapse;
+}
+
+table.autoTableStyle tr {
+}
+
+table.autoTableStyle td {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	padding: 0px;
+}
+
+/* 表格 */
+table.paddingTable { /* 防止画面崩溃 */
+	padding: 2px;
+}
+
+table.paddingTable td {
+	padding: 5px;
+}
+
+/* 表格 */
+table.bigTableStyle {
+	table-layout: auto;
+	border-width: 0px;
+}
+
+table.bigTableStyle tr {
+	height: 34px;
+}
+
+table.bigTableStyle td {
+	border-width: 0px;
+	padding: 0;
+	font-family: "宋体";
+	font-size: 24px;
+}
+
+/* 只读样式 */
+.readonly {
+	background-color: #cccccc;
+}
+
+/* 隐藏样式 */
+.hide {
+	display: none;
+}
+
+.boxTd {
+	width: 135px;
+	text-align: center;
+}
+
+.box {
+	width: 125px;
+}
+
+.boxsmallTd {
+	width: 115px;
+	text-align: center;
+}
+
+.boxsmall {
+	width: 110px;
+}
+
+.nameboxTd {
+	width: 380px;
+}
+
+.namebox {
+	width: 375px;
+}
+
+.pageNobox {
+	width: 40px;
+	vertical-align: middle;
+	text-align: right;
+	font-size: 14px;
+}
+
+.commonBtnMinimum {
+	width: 40px;
+	height: 22px;
+	vertical-align: middle;
+	align: center;
+	font-size: 14px;
+}
+
+.pageMoveBtn {
+	width: 70px;
+	height: 22px;
+	vertical-align: middle;
+	align: center;
+	font-size: 14px;
+}
+
+.itemName {
+	width: 200;
+}
+
+.noStyle {
+	width: 40px;
+}
+
+table.tableNoBorder {
+	border: 0;
+}
+
+table.tableNoBorder td {
+	border: 0;
+}
+
+.smallLoadingClass {
+	vertical-align: middle;
+	margin-left: 10px;
+	float: left;
+	display: none;
+	margin-top: 6px;
+}
+
+.listRefreshLoading {
+	position: absolute;
+	left: 45%;
+	background: #ffffff;
+	top: 40%;
+	padding: 8px;
+	z-index: 20001;
+	height: auto;
+	border: 1px solid #ccc;
+	display: none;
+}
+
+.popupClass_l {
+	width: 19px;
+	height: 45px;
+	background-image: url(../../img/frame/popup_l.png);
+	background-repeat: no-repeat;
+	float: left;
+}
+
+.popupClass_b {
+	width: auto;
+	height: 45px;
+	background-image: url(../../img/frame/popup_b.png);
+	background-repeat: repeat-x;
+	vertical-align: middle;
+	padding-top: 15px;
+	padding-right: 10px;
+	text-align: left;
+	color: #000000;
+	font-weight: bold;
+	font-size: 14px;
+	margin-left: 0px;
+	margin-top: 0px;
+	float: left;
+}
+
+.popupClass_r {
+	width: 4px;
+	height: 45px;
+	background-image: url(../../img/frame/popup_r.png);
+	background-repeat: no-repeat;
+	float: left;
+}
+
+.popupClass {
+	width: 100px;
+	height: 45px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	white-space: nowrap;
+	word-wrap: normal;
+	z-index: 1000000;
+	clear: both;
+}
+
+/*-- form style --*/
+form div.inputArea {
+	float: left;
+}
+
+form div.formLineStyle {
+	padding: 5px;
+	color: #666666;
+	font-size: 12px;
+	text-decoration: none;
+	padding: 10px;
+	vertical-align: middle
+}
+
+/*-- the style for testing --*/
+.ts {
+	background-color: #FF0000;
+}
+
+.clearDiv {
+	clear: both
+}
+
+.errorStyle {
+	border: 1px solid #FF0000;
+}
+
+.errorStyleSelectBox {
+	background-color: #FF0000;
+}
+
+.pagingTag {
+	display: none;
+	margin-top: 5px;
+}
+
+.pageingLoadingHtml {
+	width: 200px;
+	background-color: white;
+}
+
+.popUpHint {
+	width: 300px;
+	margin: 0 auto;
+	font-size: 14px;
+	color: #086;
+	border: 1px solid #f60;
+	background: #ffc;
+	padding: 10px;
+	text-align: center;
+	display: none;
+	position: absolute;
+	top: 0;
+}
+
+.popUpHint p {
+	line-height: 20px;
+}
+
+.popUpHint a {
+	color: #999;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.popUpError {
+	width: 300px;
+	margin: 0 auto;
+	font-size: 14px;
+	color: red;
+	border: 1px solid #f60;
+	background: #ffc;
+	padding: 10px;
+	text-align: center;
+	display: none;
+	position: absolute;
+	top: 0;
+}
+
+.popUpError p {
+	line-height: 20px;
+}
+
+.popUpError a {
+	color: #999;
+	text-decoration: none;
+	cursor: pointer;
+}
+.commonResult {
+	display: none;
+	position: absolute;
+	border: 1px solid #000;
+	padding: 5px;
+	background-color: #e9f1f5;
+	z-index: 100000;
+	top: 0;
+	left: 45%;
+}

@@ -1,0 +1,65 @@
+#main {
+	background-color: #fdfdf0;
+	margin: 0;
+}
+
+#header {
+	height: 40px;
+}
+
+#title {
+	height: 40px;
+	font-weight: bold;
+	font-size: x-large;
+	text-align: center;
+	background-color: #e9f1f5;
+	vertical-align: middle;
+}
+
+#content {
+	background-color: #faffea;
+}
+
+#left_menu {
+	float: left;
+	width: 200px;
+	background-color: #faffea;
+}
+
+#container {
+	background-color: blue;
+	float: right;
+}
+
+#operate {
+	background-color: #faffea;
+}
+
+#operateB {
+	background-color: blue;
+	height: 30px;
+}
+
+#list1 {
+	width: 195px;
+	float: left;
+}
+
+.toggle {
+	height: 100%;
+	width: 5px;
+	padding: 0;
+	background-image: url(../../../img/disp/menu/leftmenuToggleBg.jpg);
+	text-align: center;
+	float: right;
+	cursor: e-resize;
+	vertical-align: middle;
+}
+
+#userBar {
+	border-bottom: #c0c0c0 1px solid;
+	background: url(../../../img/disp/menu/top_nav_bg.png) repeat-x 0px -1px;
+	height: 40px;
+}
+#footer {
+}

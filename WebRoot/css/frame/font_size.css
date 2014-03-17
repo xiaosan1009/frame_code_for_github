@@ -1,0 +1,120 @@
+.size12 {
+	font-size: 12px;
+}
+.font12 {		
+	font-size: 12px;
+}
+.size14B {
+	font-size: 14px;
+	font-weight: bold;
+	font-style: normal;
+}
+.size14 {
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+}
+.font14 {		
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+}
+
+.size16 {
+	font-size: 16px;
+}
+.size16M {
+	font-size: 16px;
+	font-weight: bold;
+	background-position: center;
+}
+
+.size18 {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.tenmetsu {
+	text-decoration: blink;
+	font-size: 14px;
+	font-weight: bold;
+	color: #FF0000;
+}
+
+/*
+.small {font-size:x-small}
+.large {font-size:large}
+.copy {font-size:xx-small}
+.font10 {
+	font-size: 10px;
+	font-style: normal;
+}
+.font12 {
+	font-size: 12px;
+	font-style: normal;
+}
+.font14 {
+	font-size: 14px;
+	font-style: normal;
+}
+.font16 {
+	font-size: 16px;
+	font-style: normal;
+}
+.font18 {
+	font-size: 18px;
+	font-style: normal;
+}
+.font18B {
+	font-size: 18px;
+	font-style: bold;
+	color:#ffffff;
+}
+
+.font24 {
+	font-size: 24px;
+	font-style: normal;
+}
+.font24B {
+	font-size: 24px;
+	font-style:bold;
+	color:#ffffff;
+}
+.font36 {
+	font-size: 36px;
+	font-style: normal;
+}
+.font32 {
+	font-size: 32px;
+	font-style: normal;
+}
+.font28 {
+	font-size: 28px;
+	font-style: normal;
+
+}
+.font40B {
+	font-size: 40px;
+	font-style: bold;
+}
+.category {
+	font-size: 18px;
+	font: bold;
+}
+.red {
+	color: #ff0000;
+}
+.blue {
+	color: #0000ff;
+}
+.green {
+	color: #00cc00;
+}
+.gray {
+	color: #cccccc;
+}
+.advance {
+	color: #4c4c4c;
+	font: bold;
+}
+*/

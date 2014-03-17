@@ -1,0 +1,19 @@
+body {
+	color: #000;
+	background: #fff;
+	font-size: 12px;
+	line-height: 166.6%;
+	text-align: center;
+	filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#fafad2,endColorStr=#ffffff);
+	margin: 0;
+}
+
+body {
+	font-family: verdana
+}
+
+body,h1,h2,h3,ul,li,form,p,img {
+	margin: 0;
+	padding: 0;
+	border: 0
+}
