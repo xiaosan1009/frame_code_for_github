@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Filiale">
+	
+	<insert id="commitFilialeInfo" parameterClass="java.util.Map">
+		INSERT INTO smeltery_filiale_info(
+			filiale_name, 
+			filiale_describe
+		) 
+		VALUES(
+			#filialeName#, 
+			#filialeDescribe#
+		)
+	</insert>
+	
+	<select id="getAllFilialeInfo" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	filiale_id,
+	      	filiale_name, 
+	      	filiale_describe
+	    FROM 
+	    	smeltery_filiale_info 
+	    WHERE 
+	    	del_flg = '0'
+	</select>
+	
+	<select id="getAllFilialeInfoById" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	filiale_id,
+	      	filiale_name, 
+	      	filiale_describe
+	    FROM 
+	    	smeltery_filiale_info 
+	    WHERE 
+	    	filiale_id = #filialeId#
+	</select>
+	
+	<select id="getAllFilialeInfoForCmb" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	filiale_id value,
+	      	filiale_name label
+	    FROM 
+	    	smeltery_filiale_info 
+	    WHERE 
+	    	del_flg = '0'
+	</select>
+	
+	<update id="updateFilialeInfo" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_filiale_info 
+		SET 
+			filiale_name=#filialeName#, 
+			filiale_describe=#filialeDescribe#, 
+			update_date=sysdate,
+			operator_id=#OPERATOR_ID#
+		WHERE 
+			filiale_id = #filialeId#
+	</update>
+	
+	<update id="deleteFilialeInfo" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_filiale_info 
+		SET 
+			del_flg='1', 
+			update_date=sysdate
+		WHERE 
+			filiale_id = #filialeId#
+	</update>
+</sqlMap>

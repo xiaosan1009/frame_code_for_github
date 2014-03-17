@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	<bean id="abstractHandler" class="com.richClientFrame.handler.AbstractHandler">
+    		<property name="db" ref="dbConnection"></property>
+    		<property name="htmlTab" ref="htmlTabHandler"></property>
+    		<property name="format" ref="formatHandler"></property>
+    		<property name="dataSource" ref="dataSourceHandlerImpl"></property>
+    		<property name="execute" ref="externalHandlerImpl"></property>
+    		<property name="expand" ref="expandHandler"></property>
+    		<property name="mailSender" ref="mailSender"></property>
+    </bean>
+    
+    <bean id="abstractHandlerItem" class="com.richClientFrame.handler.AbstractHandlerItem" parent="abstractHandler">
+    </bean>
+    
+    <bean id="mailSender" class="com.richClientFrame.data.mail.MailSender">
+    	<property name="mailBean">
+    		<bean class="com.richClientFrame.data.mail.MailBean"> 
+                <property name="mailServerHost" value="${163.mailServerHost}"/> 
+                <property name="mailServerPort" value="${163.mailServerPort}"/> 
+                <property name="userName" value="${163.userName}"/> 
+                <property name="password" value="${163.password}"/> 
+                <property name="validate" value="${163.validate}"/> 
+                <property name="fromAddress" value="${163.fromAddress}"/> 
+	        </bean>
+    	</property>
+    </bean>
+    
+    <bean id="dataSourceHandlerImpl" class="com.richClientFrame.handler.impl.DataSourceHandlerImpl">
+    </bean>
+    
+    <bean id="externalHandlerImpl" class="com.richClientFrame.handler.impl.ExternalHandlerImpl">
+    </bean>
+    
+    <bean id="formatHandlerImpl" class="com.richClientFrame.handler.impl.FormatHandlerImpl">
+    </bean>
+    
+    <bean id="expandHandlerImpl" class="com.richClientFrame.handler.impl.ExpandHandlerImpl">
+    </bean>
+    
+    <bean id="expandHandler" class="cn.smeltery.handler.common.ExpandHandler">
+    </bean>
+    
+    <bean id="switchDataSource" class="com.richClientFrame.dao.SwitchDataSource">
+    	<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="oracle" value-ref="sqlMapClient" />
+				<entry key="oracle2" value-ref="sqlMapClient2" />
+			</map>
+		</property>
+   		<property name="defaultDataSource" ref="sqlMapClient"></property>
+    </bean>
+    
+    <!-- CommonChecker -->
+    <bean id="commonChecker" class="com.richClientFrame.check.CommonChecker">
+   		<property name="db" ref="dbConnection"></property>
+    </bean>
+    
+    <bean id="dbConnection" class="com.richClientFrame.service.impl.DbServiceImpl">
+   		<property name="db" ref="dbExcute"></property>
+    </bean>
+    
+    <bean id="dbExcute" class="com.richClientFrame.dao.DbConnection">
+   		<property name="queryDAO" ref="queryDAO"></property>
+   		<property name="updateDAO" ref="updateDAO"></property>
+    </bean>
+	
+	<bean id="queryDAO" class="com.richClientFrame.dao.QueryDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="switchDataSource" ref="switchDataSource" />
+	</bean>
+	
+	<bean id="updateDAO" class="com.richClientFrame.dao.UpdateDAOImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="switchDataSource" ref="switchDataSource" />
+	</bean>
+    
+    <bean id="htmlTabHandler" class="com.richClientFrame.handler.HtmlTabHandler"></bean>
+	
+</beans>

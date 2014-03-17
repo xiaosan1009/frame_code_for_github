@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Client">
+	
+	<insert id="registClientInfo" parameterClass="java.util.Map">
+		INSERT INTO SMELTERY_CLIENT_INFO(
+			CLIENT_NAME, 
+			CLIENT_SEX, 
+			CLIENT_TEL, 
+			CLIENT_FAX, 
+			CLIENT_MAIL
+		) 
+		VALUES(
+			#clientName#, 
+			#clientSex#, 
+			#clientTel#, 
+			#clientFax#, 
+			#clientMail#
+		)
+	</insert>
+	
+	<select id="getClientInfo" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  CLIENT_ID,
+	      CLIENT_NAME, 
+	      CLIENT_SEX, 
+	      CLIENT_TEL,
+	      CLIENT_FAX,
+	      CLIENT_MAIL,
+	      to_char(CREATE_DATE, 'yyyy/mm/dd hh:mm:ss') "createDate"
+	    FROM SMELTERY_CLIENT_INFO 
+	    WHERE CLIENT_ID = #clientId#
+	    AND DEL_FLG = '0'
+	</select>
+	
+	<select id="getAllClientInfo" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  CLIENT_ID,
+	      CLIENT_NAME, 
+	      CLIENT_SEX, 
+	      CLIENT_TEL,
+	      CLIENT_FAX,
+	      CLIENT_MAIL,
+	      to_char(CREATE_DATE, 'yyyy-mm-dd') "createDate" 
+	    FROM SMELTERY_CLIENT_INFO 
+	    WHERE DEL_FLG = '0'
+		<dynamic>
+			<isNotEmpty prepend="AND" property="clientSex">
+				CLIENT_SEX = #clientSex#
+			</isNotEmpty>           
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDate">
+				CREATE_DATE >= to_date(#startDate#, 'yyyy/mm/dd')
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDate">
+				<![CDATA[CREATE_DATE <= to_date(#endDate#, 'yyyy/mm/dd')]]>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<update id="updateClientInfo" parameterClass="java.util.Map">
+		UPDATE SMELTERY_CLIENT_INFO 
+		SET CLIENT_NAME=#clientName#, 
+		CLIENT_SEX=#clientSex#,
+		CLIENT_TEL=#clientTel#,
+		CLIENT_FAX=#clientFax#,
+		CLIENT_MAIL=#clientMail#,
+		UPDATE_DATE=sysdate
+		WHERE CLIENT_ID = #clientId#
+	</update>
+	
+	<update id="deleteClientInfo" parameterClass="java.util.Map">
+		UPDATE SMELTERY_CLIENT_INFO 
+		SET DEL_FLG='1', 
+		UPDATE_DATE=sysdate
+		WHERE CLIENT_ID = #clientId#
+	</update>
+</sqlMap>

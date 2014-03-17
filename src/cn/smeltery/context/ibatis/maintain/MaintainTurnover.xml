@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MaintainTurnover">
+
+	<!-- 维修流水信息添加 -->
+	<insert id="addMaintainTurnoverInfo" parameterClass="java.util.Map">
+		INSERT INTO SMELTERY_MAINTAIN_TURNOVER(
+			FILIALE_ID, 
+			MAINTAIN_DATE, 
+			MAINTAIN_COST, 
+			MAINTAIN_COMMENT, 
+			OPERATOR_ID) 
+		VALUES(
+			#filiale#, 
+			TO_DATE(#maintainDate#, 'yyyy-mm-dd'), 
+			#maintainCost#, 
+			#maintainComment#, 
+			#OPERATOR_ID#)
+	</insert>
+</sqlMap>

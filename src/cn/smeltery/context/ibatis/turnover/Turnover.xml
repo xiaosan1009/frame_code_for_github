@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Turnover">
+
+	<!-- 流水信息添加 -->
+	<insert id="addTurnoverInfo" parameterClass="java.util.Map">
+		INSERT INTO smeltery_turnover(
+			type_id, 
+			parent_type_id, 
+			turnover_number, 
+			turnover_comment, 
+			turnover_type, 
+			turnover_date, 
+			operator_id, 
+			type, 
+			batch, 
+			effective_date, 
+			turnover_price,
+			orderNo,
+			supplier
+		) 
+		VALUES(
+			#childType#, 
+			#parentType#, 
+			#turnoverNumber#, 
+			#turnoverComment#, 
+			#turnoverType#, 
+			TO_DATE(
+				#turnoverDate#, 
+				'yyyy-mm-dd'
+			), 
+			#OPERATOR_ID#, 
+			#type#, 
+			#batch#, 
+			TO_DATE(
+				#effectiveDate#, 
+				'yyyy-mm-dd'
+			), 
+			#price#,
+			#orderNo#,
+			#supplier#
+		)
+	</insert>
+	
+	<!-- 原辅材料出库信息添加 -->
+	<insert id="addMaterialTurnoverOutInfo" parameterClass="java.util.Map">
+		INSERT All 
+		<iterate conjunction=" " property="datas">
+		INTO smeltery_turnover(
+			type, 
+			batch, 
+			turnover_number, 
+			turnover_type, 
+			turnover_date, 
+			parent_type_id, 
+			type_id, 
+			filiale_id, 
+			turnover_price, 
+			operator_id,
+			orderNo,
+			deliverednoteno,
+			supplier
+		)
+		VALUES(
+			'0', 
+			#datas[].batch#, 
+			#datas[].outNumber#, 
+			'1', 
+			TO_DATE(
+				#turnoverDate#, 
+				'yyyy-mm-dd'
+			), 
+			#datas[].parentTypeId#, 
+			#datas[].typeId#, 
+			#filiale#, 
+			#datas[].price#, 
+			#OPERATOR_ID#,
+			#datas[].orderNo#,
+			#deliveredNoteNo#,
+			#datas[].supplierValue#
+		)
+		</iterate>
+		SELECT * FROM DUAL
+	</insert>
+	
+	<!-- 备品备件出库信息添加 -->
+	<insert id="addSpareTurnoverOutInfo" parameterClass="java.util.Map">
+		INSERT All 
+		<iterate conjunction=" " property="datas">
+		INTO smeltery_turnover(
+			type, 
+			batch, 
+			turnover_number, 
+			turnover_type, 
+			turnover_date, 
+			parent_type_id, 
+			type_id, 
+			effective_date, 
+			filiale_id, 
+			turnover_price, 
+			operator_id,
+			orderNo,
+			deliverednoteno,
+			supplier
+		)
+		VALUES(
+			'1', 
+			#datas[].batch#, 
+			#datas[].outNumber#, 
+			'1', 
+			TO_DATE(
+				#turnoverDate#, 
+				'yyyy-mm-dd'
+			), 
+			#datas[].parentTypeId#, 
+			#datas[].typeId#, 
+			TO_DATE(
+				#effectiveDate#, 
+				'yyyy-mm-dd'
+			), 
+			#filiale#, 
+			#datas[].price#, 
+			#OPERATOR_ID#,
+			#datas[].orderNo#,
+			#deliveredNoteNo#,
+			#datas[].supplierValue#
+		)
+		</iterate>
+		SELECT * FROM DUAL
+	</insert>
+	
+	<!-- 库存信息查询 -->
+	<select id="getTurnoverInfo" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		<![CDATA[
+		SELECT 
+	      	s.num, 
+	      	CASE WHEN 
+	      		s.num < 1 
+	      	THEN 
+	      		TO_CHAR(s.num,'FM999999990.00') 
+	      	ELSE 
+	      		TO_CHAR(s.num) 
+	      	END || s4.unit num_label,
+	      	t1.orderNo,
+	      	t1.supplier,
+	      	t1.batch,
+	      	t1.parent_type_id,
+          	t1.type_id,
+          	t1.turnover_price,
+          	s2.type_name parent_type_name,
+          	s3.type_name type_name,
+          	t1.effective_date,
+	      	t1.turnover_date 
+	    FROM 
+	    	smeltery_turnover t1,
+	    	(
+	    		SELECT 
+		    		type_id, 
+		    		type_name 
+		    	FROM 
+		    		smeltery_type t2 
+		    	WHERE t2.del_flg = '0'
+	    	) s2,
+	    	(
+	    		SELECT 
+		    		type_id, 
+		    		type_name 
+		    	FROM 
+		    		smeltery_type t2 
+		    	WHERE t2.del_flg = '0'
+	    	) s3,
+	    	(
+	    		SELECT 
+		    		type_id, 
+		    		unit 
+		    	FROM 
+		    		smeltery_type t2 
+		    	WHERE t2.DEL_FLG = '0'
+	    	) s4,
+	    	(
+	    		SELECT 
+		    		SUM(
+		    			CASE WHEN 
+		    				t.turnover_type = '0' 
+		    			THEN 
+		    				t.turnover_number 
+		    			ELSE 
+		    				(t.turnover_number * -1) 
+		    			END
+		    		) num,
+		    		t.batch
+		    	FROM 
+		    		smeltery_turnover t
+		    	WHERE 
+		    		t.DEL_FLG = '0'
+		    	]]>
+		    		<dynamic>
+						<isNotEmpty prepend="AND" property="type">
+				    		t.type = #type#
+						</isNotEmpty>           
+					</dynamic>
+		    	<![CDATA[
+		    	GROUP BY t.batch
+	    	) s
+	    WHERE 
+	    	s.batch = t1.batch
+		    AND t1.turnover_type = '0'
+		    AND s.num <> 0
+		    AND t1.del_flg = '0'
+		    AND s2.type_id = t1.parent_type_id
+		    AND s3.type_id = t1.type_id
+		    AND s4.type_id = t1.type_id
+		    AND (t1.effective_date IS NULL 
+	    		OR t1.effective_date >= SYSDATE)
+	    ]]>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="parentType">
+				t1.parent_type_id = #parentType#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="childType">
+				t1.type_id = #childType#
+			</isNotEmpty>           
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDate">
+				t1.turnover_date >= to_date(#startDate#, 'yyyy/mm/dd')
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDate">
+				<![CDATA[t1.turnover_date <= to_date(#endDate#, 'yyyy/mm/dd')]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="searchSupplier">
+				<![CDATA[t1.supplier like '%' || #searchSupplier# ||'%']]>
+			</isNotEmpty>
+		</dynamic>
+	    ORDER BY 
+	    	t1.turnover_date DESC
+	</select>
+	
+	<!-- 库存信息查询【根据批次号】 -->
+	<select id="getAllTurnoverInfo" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		<![CDATA[
+		SELECT 
+			t1.type,
+			CASE WHEN 
+				s.num < 1 
+			THEN
+          		TO_CHAR(s.num,'FM999999990.00')
+         	ELSE
+				TO_CHAR(s.num)
+			END amount,
+	      	CASE WHEN 
+	      		s.num < 1 
+	      	THEN 
+	      		TO_CHAR(s.num,'FM999999990.00') 
+	      	ELSE 
+	      		TO_CHAR(s.num) 
+	      	END || s4.unit num,
+	      	t1.batch,
+	      	t1.supplier,
+	      	t1.orderNo,
+	      	t1.parent_type_id,
+          	t1.type_id,
+          	t1.turnover_price,
+          	s2.type_name parent_type_name,
+          	s3.type_name type_name,
+          	t1.effective_date,
+	      	t1.turnover_date 
+	    FROM 
+	    	smeltery_turnover t1,
+	    	(
+	    		SELECT 
+	    			type_id, 
+	    			type_name 
+	    		FROM 
+	    			smeltery_type t2 
+	    		WHERE 
+	    			t2.del_flg = '0'
+	    	) s2,
+	    	(
+	    		SELECT 
+	    			type_id, 
+	    			type_name 
+	    		FROM 
+	    			smeltery_type t2 
+	    		WHERE 
+	    			t2.del_flg = '0'
+	    	) s3,
+	    	(
+	    		SELECT 
+	    			type_id, 
+	    			unit 
+	    		FROM 
+	    			smeltery_type t2 
+	    		WHERE 
+	    			t2.DEL_FLG = '0'
+	    	) s4,
+	    	(
+	    		SELECT 
+	    			SUM(
+	    				CASE WHEN 
+	    					t.turnover_type = '0' 
+	    				THEN 
+	    					t.turnover_number 
+	    				ELSE 
+	    					(t.turnover_number * -1) 
+	    				END
+	    			) num,
+		    		t.batch
+			    FROM 
+			    	smeltery_turnover t
+			    WHERE 
+			    	t.del_flg = '0'
+			    GROUP BY 
+			    	t.batch
+		    ) s
+	    WHERE 
+	    	s.batch = t1.batch
+		    AND t1.turnover_type = '0'
+		    AND s.num <> 0
+		    AND t1.del_flg = '0'
+		    AND s2.type_id = t1.parent_type_id
+		    AND s3.type_id = t1.type_id
+		    AND s4.type_id = t1.type_id
+	    ]]>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="type">
+				t1.type = #type#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="parentType">
+				t1.parent_type_id = #parentType#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="childType">
+				t1.type_id = #childType#
+			</isNotEmpty>           
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDate">
+				t1.turnover_date >= to_date(#startDate#, 'yyyy/mm/dd')
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDate">
+				<![CDATA[t1.turnover_date <= to_date(#endDate#, 'yyyy/mm/dd')]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="searchSupplier">
+				<![CDATA[t1.supplier like '%' || #searchSupplier# ||'%']]>
+			</isNotEmpty>
+		</dynamic>
+		ORDER BY 
+	    	t1.turnover_date DESC
+	</select>
+	
+	<!-- 库存信息查询【根据上下限判断警报】 -->
+	<select id="getAllTurnoverInfoByType" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		<![CDATA[
+		SELECT 
+	        mm.type,
+	        mm.parent_type_id,
+	        mm.type_id,
+	        mm.type_name,
+	        mm.top_limit,
+	        mm.floor_limit,
+	        mn.type_name parent_type_name,
+	        CASE WHEN 
+	        	mm.num > mm.top_limit 
+	        THEN 
+	        	'1' 
+	        ELSE 
+	        	CASE WHEN 
+	        		mm.num < mm.floor_limit 
+	        	THEN 
+	        		'1' 
+	        	ELSE 
+	        		'0' 
+	        	END 
+	        END warning,
+	        CASE WHEN 
+	      		mm.num < 1 
+	      	THEN 
+	      		TO_CHAR(mm.num, '0.0') 
+	      	ELSE 
+	      		TO_CHAR(mm.num) 
+	      	END || mo.unit num
+        FROM
+	        (
+	        	SELECT 
+	        		type_id, type_name 
+	        	FROM 
+	        		smeltery_type t2 
+	        	WHERE 
+	        		t2.del_flg = '0'
+	        ) mn,
+	        (
+	        	SELECT 
+	        		TYPE_ID, 
+	        		unit 
+	        	FROM 
+	        		SMELTERY_TYPE t2 
+	        	WHERE 
+	        		t2.DEL_FLG = '0'
+	        ) mo,
+	        (
+	        	SELECT 
+			        s3.type_case type,
+			        NVL(
+			        	s3.top_limit, 
+			        	0
+			        ) top_limit,
+			        NVL(
+			        	s3.floor_limit, 
+			        	0
+			        ) floor_limit,
+		            NVL(
+		            	s.num, 
+		            	'0'
+		            ) num, 
+		            NVL(
+		            	NVL(
+		            		s.parent_type_id, 
+		            		s3.type_parent_id
+		            	), 
+		            	NVL(
+		            		s.type_id, 
+		            		s3.type_id
+		            	)
+		            ) parent_type_id,
+	              	NVL(
+	              		s.type_id, 
+	              		s3.type_id
+	              	) type_id,
+	              	s3.type_name type_name
+	        	FROM
+	        	(
+	        		SELECT 
+	        			t2.top_limit, 
+	        			t2.floor_limit, 
+	        			t2.type_case, 
+	        			t2.TYPE_ID, 
+	        			t2.type_parent_id,  
+	        			t2.type_name 
+	        		FROM 
+	        			smeltery_type t2 
+	        		WHERE 
+	        			t2.del_flg = '0'
+	        	) s3,
+				(
+			        SELECT 
+			        	SUM(
+			        		CASE WHEN 
+			        			t.turnover_type = '0' 
+			        		THEN 
+			        			t.turnover_number 
+			        		ELSE 
+			        			(t.turnover_number * -1) 
+			        		END
+			        	) num,
+						t.parent_type_id type_id,
+			          	t.type,
+			          	t.parent_type_id
+		          	FROM 
+		          		smeltery_turnover t
+		          	WHERE 
+		          		t.del_flg = '0'
+		          	GROUP BY 
+		          		t.type,
+		          		t.parent_type_id
+		          	UNION ALL 
+		          	SELECT 
+		          		SUM(
+		          			CASE WHEN 
+		          				t.turnover_type = '0' 
+		          			THEN 
+		          				t.turnover_number 
+		          			ELSE 
+		          				(t.turnover_number * -1) 
+		          			END
+		          		) num,
+			          	t.type_id,
+			          	t.type,
+			          	t.parent_type_id
+		          	FROM 
+		          		smeltery_turnover t
+		          	WHERE 
+		          		t.DEL_FLG = '0'
+		          		and t.type_id <> t.parent_type_id
+		          	GROUP BY 
+		          		t.type_id, 
+			          	t.type,
+			          	t.parent_type_id
+				) s
+	        	WHERE 
+	        		s3.TYPE_ID = s.type_id(+)
+	        ) mm
+	        WHERE 
+	        	mn.TYPE_ID = mm.parent_type_id
+	        	and mo.type_id = mm.type_id
+	    ]]>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="type">
+				mm.type = #type#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="parentType">
+				mm.parent_type_id = #parentType#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="childType">
+				mm.type_id = #childType#
+			</isNotEmpty>           
+		</dynamic>
+		order by mm.parent_type_id, mm.type_id
+	</select>
+	
+	<!-- 流水信息查询 -->
+	<select id="getTurnoverInfos" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		<![CDATA[
+		SELECT 
+			t1.turnover_id,
+	      	t1.turnover_number,
+	      	CASE WHEN 
+	      		t1.turnover_number < 1 
+	      	THEN 
+	      		TO_CHAR(t1.turnover_number, '0.0') 
+	      	ELSE 
+	      		TO_CHAR(t1.turnover_number) 
+	      	END amount,
+	      	CASE WHEN 
+	      		t1.turnover_number < 1 
+	      	THEN 
+	      		TO_CHAR(t1.turnover_number, '0.0') 
+	      	ELSE 
+	      		TO_CHAR(t1.turnover_number) 
+	      	END || s4.unit number_label,
+	      	t1.turnover_type, 
+	      	t1.batch,
+	      	t1.orderNo,
+	      	t1.supplier,
+	      	t1.deliverednoteno,
+	      	t1.parent_type_id,
+          	t1.type_id,
+          	t1.turnover_price,
+          	s1.filiale_name,
+          	s2.type_name parent_type_name,
+          	s3.type_name type_name,
+          	t1.effective_date,
+	      	t1.turnover_date,
+	      	t1.type
+	    FROM 
+	    	smeltery_turnover t1,
+		    (
+		    	SELECT 
+		    		filiale_id, 
+		    		filiale_name 
+		    	FROM 
+		    		smeltery_filiale_info t2 
+		    	WHERE 
+		    		t2.del_flg = '0'
+		    ) s1,
+		    (
+		    	SELECT 
+		    		type_id, 
+		    		type_name 
+		    	FROM 
+		    		smeltery_type t2 
+		    	WHERE 
+		    		t2.del_flg = '0'
+		    ) s2,
+		    (
+		    	SELECT 
+		    		type_id, 
+		    		type_name 
+		    	FROM 
+		    		smeltery_type t2 
+		    	WHERE 
+		    		t2.del_flg = '0'
+		    ) s3,
+		    (
+		    	SELECT 
+		    		type_id, 
+		    		unit 
+		    	FROM 
+		    		smeltery_type t2 
+		    	WHERE 
+		    		t2.del_flg = '0'
+		    ) s4
+	    WHERE 
+	    	t1.del_flg = '0'
+		    AND s1.filiale_id(+) = t1.filiale_id
+		    AND s2.type_id = t1.parent_type_id
+		    AND s3.type_id = t1.type_id
+		    AND s4.type_id = t1.type_id
+	    ]]>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="status">
+				t1.turnover_type = #status#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="type">
+				t1.type = #type#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="parentType">
+				t1.parent_type_id = #parentType#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="childType">
+				t1.type_id = #childType#
+			</isNotEmpty>           
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDate">
+				t1.turnover_date >= to_date(#startDate#, 'yyyy/mm/dd')
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDate">
+				<![CDATA[t1.turnover_date <= to_date(#endDate#, 'yyyy/mm/dd')]]>
+			</isNotEmpty>
+		</dynamic>
+		 <dynamic>
+			<isNotEmpty prepend="AND" property="searchSupplier">
+				<![CDATA[t1.supplier like '%' || #searchSupplier# ||'%']]>
+			</isNotEmpty>
+		</dynamic>
+		ORDER BY 
+			t1.turnover_date DESC
+	</select>
+	
+	<!-- 库存信息报表查询 -->
+	<select id="getAllTurnoverInfoByChar" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		<![CDATA[
+		SELECT 
+			mm.num "chart_num",
+			mm.type_id "chart_type",
+			mm.turnoverDate "chart_date",
+			mm.type_name || '(' || mm.parent_type_name || ')' "chart_name"
+		FROM
+			(
+				SELECT 
+					SUM(
+						CASE WHEN 
+							t.turnover_type = '0' 
+						THEN 
+							t.turnover_number 
+						ELSE 
+							(t.turnover_number * -1) 
+						END
+					) num,
+					t.type, 
+					t.type_id, 
+					t.parent_type_id,
+					TO_CHAR(
+						t.turnover_date, 
+						$dateFormat$
+					) turnoverDate,
+					s2.type_name parent_type_name,
+					s3.type_name type_name
+				FROM 
+					smeltery_turnover t,
+					(
+						SELECT 
+							type_id, 
+							type_name 
+						FROM 
+							smeltery_type t2 
+						WHERE 
+							t2.del_flg = '0'
+					) s2,
+					(
+						SELECT 
+							type_id, 
+							type_name 
+						FROM 
+							smeltery_type t2 
+						WHERE 
+							t2.del_flg = '0'
+					) s3
+				WHERE 
+					t.del_flg = '0'
+					AND s2.type_id = t.parent_type_id
+					AND s3.type_id = t.type_id
+				GROUP BY 
+					t.type_id, 
+					TO_CHAR(
+						t.turnover_date, 
+						$dateFormat$
+					),
+					s2.type_name,
+					s3.type_name
+			) mm
+		WHERE 
+			mm.num <> 0
+	    ]]>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="type">
+				mm.type = #type#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="parentType">
+				mm.parent_type_id = #parentType#
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="childType">
+				mm.type_id = #childType#
+			</isNotEmpty>           
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDate">
+				TO_DATE(
+					mm.turnoverDate, 
+					'yyyy-mm-dd'
+				) >= TO_DATE(
+					#startDate#, 
+					'yyyy-mm-dd'
+				)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDate">
+				<![CDATA[
+					TO_DATE(
+						mm.turnoverDate, 
+						'yyyy-mm-dd'
+					) <= TO_DATE(
+						#endDate#, 
+						'yyyy-mm-dd'
+					)
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		ORDER BY 
+			mm.turnoverDate, 
+			mm.type_id
+	</select>
+	
+	<select id="searchSupplierList" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+			DISTINCT(t.supplier) as "supplier"
+		FROM 
+			smeltery_turnover t 
+		WHERE 
+			t.supplier IS NOT NULL 
+		AND 
+			t.del_flg = 0
+		<dynamic>
+			<isNotEmpty prepend="AND" property="searchSupplier">
+				<![CDATA[
+					t.supplier like '%' || #searchSupplier# || '%'
+				]]>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<select id="getTurnoverItemInfo" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT
+			t.type_id,
+			t.type,
+       		t.parent_type_id,
+			t.supplier,
+			t.orderno,
+			t.turnover_price,
+			t.turnover_number,
+			t.effective_date
+		FROM 
+			smeltery_turnover t
+		WHERE
+			t.turnover_id = #turnover_id# 
+	</select>
+	
+	<!-- test -->
+	<select id="getTypeIdForTest" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+select t.type_id, t.type, t.Parent_Type_Id
+  from smeltery_filiale_turnover t
+ where t.batch = '2012021717222113'
+
+ group by t.type_id, t.type, t.Parent_Type_Id
+	</select>
+	
+	<update id="updateTurnoverItemInfo" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_turnover t
+		SET 
+			t.type_id = #childType#,
+			t.parent_type_id = #parentType#,
+			t.turnover_number = #turnoverNumber#,
+			t.turnover_price = #price#,
+			t.supplier = #supplier#,
+			t.effective_date = to_date(#effective_date#, 'yyyy/mm/dd')
+		WHERE 
+			t.turnover_id = #turnover_id#
+	</update>
+</sqlMap>

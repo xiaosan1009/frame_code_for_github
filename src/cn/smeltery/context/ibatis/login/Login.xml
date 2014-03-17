@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Login">
+  
+	<select id="checkUserExistence" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT * FROM SMELTERY_USER_BASIC 
+		WHERE USER_NAME = #userName#
+		AND DEL_FLG = '0'
+	</select>
+  
+	<select id="checkUserAvailable" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT * FROM SMELTERY_USER_BASIC 
+		WHERE USER_NAME = #userName#
+		AND USER_PASSWORD = #passWord#
+		AND DEL_FLG = '0'
+	</select>
+	
+	<insert id="registUserBasic" parameterClass="java.util.Map">
+		INSERT INTO SMELTERY_USER_BASIC(USER_NAME, USER_PASSWORD) 
+		VALUES(#id_0003#, #id_0004#)
+	</insert>
+	
+	<!--  -->
+	<update id="updateUserInfo" parameterClass="java.util.Map">
+		UPDATE SMELTERY_USER_BASIC set USER_PASSWORD=#userPassWord#,UPDATE_DATE=sysdate
+		WHERE USER_NAME = #userName#
+	</update>
+  
+</sqlMap>

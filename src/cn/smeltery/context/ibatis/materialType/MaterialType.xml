@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MaterialType">
+	
+	<insert id="addMaterialTypeInfo" parameterClass="java.util.Map">
+		INSERT INTO smeltery_type(
+			type_name, 
+			type_parent_id, 
+			operator_id, 
+			type_case
+		) 
+		VALUES(
+			#typeName#, 
+			#typeId#, 
+			#OPERATOR_ID#, 
+			'0'
+		)
+	</insert>
+	
+	<select id="getAllMaterialType" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	t.type_id,
+	      	t.type_name, 
+	      	NVL(
+	      		s1.type_name, t.type_name
+	      	) parent_name, 
+	      	t.type_parent_id,
+	      	t.top_limit,
+	      	t.floor_limit,
+	      	t.unit
+	    FROM 
+	    	smeltery_type t, 
+	    	(
+	    		SELECT 
+	    			type_id, 
+	    			type_name 
+	    		FROM 
+	    			smeltery_type 
+	    		WHERE 
+	    			del_flg = '0' 
+	    			AND type_case = '0'
+	    	) s1
+	    WHERE 
+	    	t.type_case = '0'
+	    	AND t.del_flg = '0'
+	    	AND s1.type_id(+) = t.type_parent_id
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="parentType">
+				(
+					t.TYPE_PARENT_ID = #parentType# 
+					OR (t.type_parent_id IS NULL AND t.type_id = #parentType#)
+				)
+			</isNotEmpty>           
+		</dynamic>
+	    <dynamic>
+			<isNotEmpty prepend="AND" property="childType">
+				t.TYPE_ID = #childType#
+			</isNotEmpty>           
+		</dynamic>
+	    ORDER BY 
+	    	type_parent_id DESC, 
+	    	type_id
+	</select>
+	
+	<select id="getParentMaterialType" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+			type_id,
+			type_name, 
+			type_parent_id
+	    FROM 
+	    	smeltery_type 
+	    WHERE 
+	    	type_parent_id IS NULL
+	    	AND type_case = '0'
+	    	AND del_flg = '0'
+	</select>
+	
+	<select id="getParentMaterialTypeForCmb" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+			TYPE_ID value,
+			TYPE_NAME label
+	    FROM 
+	    	smeltery_type 
+	    WHERE 
+	    	type_parent_id IS NULL
+	    	AND type_case = '0'
+	    	AND del_flg = '0'
+	</select>
+	
+	<select id="getParentTypeForCmb" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+			type_id value,
+			type_name label
+	    FROM 
+	    	smeltery_type 
+	    WHERE 
+	    	type_parent_id IS NULL
+	    	AND type_case = #type#
+	    	AND del_flg = '0'
+	</select>
+	
+	<select id="getChildTypeForCmb" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	type_id value,
+	      	type_name label
+	    FROM 
+	    	smeltery_type 
+	    WHERE 
+	    	type_parent_id = #parentType#
+		    AND type_case = #type#
+		    AND del_flg = '0'
+	</select>
+	
+	<select id="getChildMaterialType" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	type_id,
+	      	type_name, 
+	      	type_parent_id
+	    FROM 
+	    	smeltery_type 
+	    WHERE 
+	    	type_parent_id = #parentId#
+		    AND type_case = '0'
+		    AND del_flg = '0'
+	</select>
+	
+	<select id="getChildMaterialTypeForCmb" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	type_id value,
+	      	type_name label
+	    FROM 
+	    	smeltery_type 
+	    WHERE 
+	    	type_parent_id = #parentType#
+		    AND type_case = '0'
+		    AND del_flg = '0'
+	</select>
+	
+	<select id="getChildMaterialTypeForCmbTypeId" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	type_id value,
+	      	type_name label
+	    FROM 
+	    	smeltery_type 
+	    WHERE 
+	    	type_parent_id = #parentTypeId#
+		    AND type_case = '0'
+		    AND del_flg = '0'
+	</select>
+	
+	<select id="getMaterialTypeInfoById" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT 
+		  	type_id,
+	      	type_name, 
+	      	type_parent_id
+	    FROM 
+	    	smeltery_type 
+    	WHERE 
+    		type_id = #typeId#
+	    	AND type_case = '0'
+	</select>
+	
+	<update id="updateMaterialTypeInfo" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_type 
+		SET 
+			type_name = #typeName#,
+			update_date = SYSDATE
+		WHERE 
+			type_id = #typeId#
+	</update>
+	
+	<update id="updateMaterialTypeUnit" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_type 
+		SET 
+			unit=#unit#,
+			operator_id = #OPERATOR_ID#,
+			update_date = SYSDATE
+		WHERE 
+			type_id = #typeId#
+	</update>
+	
+	<update id="updateMaterialTypeLimit" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_type 
+		SET 
+			top_limit = #topLimit#,
+			floor_limit = #floorLimit#,
+			operator_id = #OPERATOR_ID#,
+			update_date = SYSDATE
+		WHERE 
+			type_id = #typeId#
+	</update>
+	
+	<update id="deleteMaterialTypeInfo" parameterClass="java.util.Map">
+		UPDATE 
+			smeltery_type 
+		SET 
+			del_flg = '1', 
+			update_date = SYSDATE
+		WHERE 
+			type_id = #typeId#
+	</update>
+</sqlMap>

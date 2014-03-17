@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SampleLogin">
+
+	<select id="selectUserInfo" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT * FROM USER_BASIC 
+		WHERE flag = '0'
+		ORDER BY id
+	</select>
+  
+	<select id="checkUserExistence" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT * FROM USER_BASIC 
+		WHERE userName = #userName#
+		AND flag = '0'
+	</select>
+  
+	<select id="checkUserAvailable" parameterClass="java.util.Map" resultClass="com.richClientFrame.dao.TableRowMap">
+		SELECT * FROM USER_BASIC 
+		WHERE userName = #userName#
+		AND userPassWord = #passWord#
+		AND flag = '0'
+	</select>
+	
+	<insert id="registUserBasic" parameterClass="java.util.Map">
+		INSERT INTO USER_BASIC(userName, userPassWord, createDate) 
+		VALUES(#userName#, #passWord#, convert(varchar(30),getdate(), 20))
+	</insert>
+	
+	<insert id="registUserBasicTest" parameterClass="java.util.Map">
+		INSERT INTO USER_BASIC(id, userName, userPassWord, createDate) 
+		VALUES(1, #userName#, #passWord#, convert(varchar(30),getdate(), 20))
+	</insert>
+  
+</sqlMap>
