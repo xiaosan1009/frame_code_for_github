@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Menu>
+	<main name="用户管理" parentId="10">
+		<sub name="添加管理用户" dispcode="010001" functionId="1001"/>
+		<sub name="管理用户管理" dispcode="010002" functionId="1002"/>
+		<sub name="添加客户信息" dispcode="010003" functionId="1003"/>
+		<sub name="客户信息管理" dispcode="010004" functionId="1004"/>
+		<sub name="用户权限管理" dispcode="010005" functionId="1005"/>
+		<sub name="测试servlet" dispcode="800401" functionId="1006"/>
+		<sub name="测试multiple" dispcode="010006" functionId="1007"/>
+		<sub name="测试多数据源事务" dispcode="010007" functionId="1008"/>
+		<sub name="测试引擎js" dispcode="010008" functionId="1009"/>
+		<sub name="测试发送邮件" dispcode="010009" functionId="1010"/>
+	</main>
+	<main name="库存管理" parentId="20">
+		<sub name="原辅材料入库" dispcode="020100" functionId="2001"/>
+		<sub name="备品备件入库" dispcode="020200" functionId="2002"/>
+		<sub name="原辅材料出库" dispcode="020300" functionId="2003"/>
+		<sub name="备品备件出库" dispcode="020400" functionId="2004"/>
+		<sub name="库存查询" dispcode="020800" functionId="2008"/>
+		<sub name="库存管理" dispcode="020900" functionId="2009"/>
+		<sub name="库存信息报表" dispcode="020901" functionId="2010"/>
+	</main>
+	<main name="分厂管理" parentId="30">
+		<sub name="库存查询" dispcode="030100" functionId="3001"/>
+		<sub name="原辅材料消耗录入" dispcode="030200" functionId="3002"/>
+		<sub name="备品备件消耗录入" dispcode="030300" functionId="3003"/>
+		<sub name="维修费用录入" dispcode="030400" functionId="3004"/>
+		<sub name="消耗及维修查询" dispcode="030500" functionId="3005"/>
+		<sub name="库存信息报表" dispcode="030101" functionId="3006"/>
+	</main>
+	<main name="报警功能" parentId="40">
+		<sub name="根据上下限查询库存情况" dispcode="040300" functionId="4003"/>
+		<sub name="原辅材料上下限设定" dispcode="040100" functionId="4001"/>
+		<sub name="备品备件上下限设定" dispcode="040200" functionId="4002"/>
+	</main>
+	<main name="系统设置" parentId="50">
+		<sub name="小数点位数设定" dispcode="050100" functionId="5001"/>
+		<sub name="原辅材料类型管理" dispcode="020500" functionId="2005"/>
+		<sub name="备品备件类型管理" dispcode="020600" functionId="2006"/>
+		<sub name="选矿冶炼厂下设管理" dispcode="020700" functionId="2007"/>
+		<sub name="原辅材料单位管理" dispcode="050300" functionId="5003"/>
+		<sub name="备品备件单位管理" dispcode="050400" functionId="5004"/>
+	</main>
+	<main name="引擎示例" parentId="60">
+		<sub name="读取excel生成列表信息" dispcode="060001" functionId="6001"/>
+		<sub name="读取动态excel生成列表信息" dispcode="060002" functionId="6002"/>
+	</main>
+</Menu>

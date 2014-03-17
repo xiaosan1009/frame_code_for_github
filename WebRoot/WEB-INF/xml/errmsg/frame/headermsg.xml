@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<datatype>
+	<!-- 客户端请求结果响应参数设定 -->
+	<type value="UR100010000" name_zh_CN="" name_eng="" type="header" />
+	<type value="UR100010001" name_zh_CN="服务器异常" name_eng="" type="header" />
+	<type value="UR100010002" name_zh_CN="" name_eng="" type="header" />
+	<type value="UR100010003" name_zh_CN="登录完毕" name_eng="" type="header" />
+	<type value="UR100010004" name_zh_CN="输入内容有错误" name_eng="" type="header" />
+	<type value="UR100010005" name_zh_CN="输入内容的登录失败" name_eng="" type="header" />
+	<type value="UR100010006" name_zh_CN="数据的获得失败" name_eng="" type="header" />
+	<type value="UR100010007" name_zh_CN="不存在所获得的数据" name_eng="" type="header" />
+	<type value="UR100010008" name_zh_CN="完成删除" name_eng="" type="header" />
+	<type value="UR100010009" name_zh_CN="初期画面显示" name_eng="" type="header" />
+	<type value="UR100010010" name_zh_CN="上传成功" name_eng="" type="header" />
+	<type value="UR100010011" name_zh_CN="用户名或者密码有错误" name_eng="" type="header" />
+	<type value="UR100010012" name_zh_CN="因为长时间没有操作，已自动退出" name_eng="" type="header" />
+	<type value="UR100010013" name_zh_CN="数据库操作异常" name_eng="" type="header" />
+	<type value="UR100010014" name_zh_CN="数据的删除失败" name_eng="" type="header" />
+	<type value="UR100010015" name_zh_CN="输入的操作者名字已经被使用。请输入与其不同的操作者名字" name_eng="" type="header" />
+	<type value="UR100010016" name_zh_CN="连接的用户超过了session的最大数" name_eng="" type="header" />
+	<type value="UR100010017" name_zh_CN="用户重复登录！" name_eng="" type="header" />
+	<type value="UR100010018" name_zh_CN="您所操作的请求地址不存在！" name_eng="" type="header" />
+	<!-- 接口请求结果响应参数设定 -->
+</datatype>

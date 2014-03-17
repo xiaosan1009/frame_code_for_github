@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+##################################################################
+・Hanlder 在spring中的映射名（一般：类名首字母小写）
+　handlerclass
+・方法名
+　method
+・JSP文件名（默认：共通）
+　lang = "ja" → 日本语
+　lang = "zh_CN" → 中国语
+  client 客户端类型（0：通用；1：ajax；2：flex；3：android）
+・退出（默认：自动登出）
+　logout = "0"→不自动登出
+・请求种类
+　request = "servlet"→servlet请求
+　【注意1】cmdcode="0"和cmdcode="100"的时候为固定的servlet
+・JSP迁移（默认：迁移）
+　forward = "0"→JSP不迁移
+ check = "1"→需要共通验证
+・特定的画面号
+ dispcode = 
+ 	000000 ~ 001000 共通
+ 	001001 ~ 009999 插件
+ 	100001 ~ 999999 一般性机能
+ 	
+・特定的方法号
+　cmdcode = 
+
+	0：初期表示
+	
+	99：分页表示
+	
+	100、101：打印画面
+	
+	201~205：Chart表示
+	
+	400：下载处理
+
+	500：上传处理
+
+	1001：自动填充处理
+	
+	9999:插件信息取得
+
+##################################################################
+-->
+
+<request xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../request.xsd">
+	<disps>
+		<!-- 库存流水查询画面 -->
+		<disp code="020900" class="inventoryTurnoverHandle" describe="库存流水查询画面" jsp="/WEB-INF/jsp/disp/turnover/query_turnover_info.jsp">
+			<cmbs>
+				<cmb targetId="status">
+					<option label="请选择..." value=""/>
+					<option label="入库" value="0"/>
+					<option label="出库" value="1"/>
+				</cmb>
+				<cmb targetId="type">
+					<option label="请选择..." value=""/>
+					<option label="原辅材料" value="0"/>
+					<option label="备品备件" value="1"/>
+				</cmb>
+				<cmb targetId="parentType">
+					<option label="请选择..." value=""/>
+				</cmb>
+				<cmb targetId="childType">
+					<option label="请选择..." value=""/>
+				</cmb>
+			</cmbs>
+			<cmds>
+				<cmd code="1" describe="查询库存信息" jsp="/WEB-INF/jsp/disp/turnover/query_turnover_info_list1.jsp">
+					<list sql="Turnover.getTurnoverInfos" pageSize="10">
+						<results>
+							<result operator="set" targetId="number" value="#TURNOVER_NUMBER"></result>
+							<result operator="set" targetId="numberLabel" value="#NUMBER_LABEL"></result>
+							<result operator="set" targetId="turnoverType" value="fmt:FS_0014">
+								<conditions>
+									<condition operator="==" property="#TURNOVER_TYPE" value="0"/>
+								</conditions>
+							</result>
+							<result operator="set" targetId="turnoverType" value="fmt:FS_0015">
+								<conditions>
+									<condition operator="==" property="#TURNOVER_TYPE" value="1"/>
+								</conditions>
+							</result>
+							<result operator="set" targetId="orderNo" value="#ORDERNO"></result>
+							<result operator="set" targetId="supplier" value="#SUPPLIER"></result>
+							<result operator="set" targetId="deliverednoteno" value="#DELIVEREDNOTENO"></result>
+							<result operator="set" targetId="batch" value="#BATCH"></result>
+							<result operator="set" targetId="parentTypeId" value="#PARENT_TYPE_ID"></result>
+							<result operator="set" targetId="typeId" value="#TYPE_ID"></result>
+							<result operator="set" targetId="price" value="#TURNOVER_PRICE"></result>
+							<result operator="set" targetId="filialeName" value="#FILIALE_NAME"></result>
+							<result operator="set" targetId="parentTypeName" value="#PARENT_TYPE_NAME"></result>
+							<result operator="set" targetId="typeName" value="#TYPE_NAME"></result>
+							<result operator="set" targetId="price" value="#TURNOVER_PRICE"></result>
+							<result operator="set" targetId="turnoverDate" value="#TURNOVER_DATE"></result>
+							<result operator="set" targetId="effectiveDate" value="#EFFECTIVE_DATE"></result>
+							<result operator="set" targetId="turnover_type" value="#TURNOVER_TYPE"></result>
+							<result operator="set" targetId="turnover_id" value="#TURNOVER_ID"></result>
+							<result operator="set" targetId="type" value="#TYPE"></result>
+						</results>
+						<styles>
+							<style property="turnoverType">
+								<textColors>
+									<textColor value="red">
+										<conditions>
+											<condition operator="==" property="#TURNOVER_TYPE" value="0"/>
+										</conditions>
+									</textColor>
+									<textColor value="blue">
+										<conditions>
+											<condition operator="==" property="#TURNOVER_TYPE" value="1"/>
+										</conditions>
+									</textColor>
+								</textColors>
+							</style>
+						</styles>
+					</list>
+				</cmd>
+				<cmd code="2" describe="生成原辅材料类型1级菜单">
+					<items>
+						<item list="true" sql="MaterialType.getParentMaterialTypeForCmb" targetId="parentType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="3" describe="生成原辅材料类型2级菜单">
+					<items>
+						<item list="true" sql="MaterialType.getChildMaterialTypeForCmb" targetId="childType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="4" describe="生成备品备件类型1级菜单">
+					<items>
+						<item list="true" sql="SpareType.getParentSpareTypeForCmb" targetId="parentType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="5" describe="生成备品备件类型2级菜单">
+					<items>
+						<item list="true" sql="SpareType.getChildSpareTypeForCmb" targetId="childType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="6" describe="菜单初始化">
+					<items>
+						<item list="true" targetId="parentType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				
+				<cmd code="7" describe="验证查询条件">
+					<items>
+						<item>
+							<checks>
+								<check>
+									<conditions>
+										<condition operator="＜=" property="$startDate" value="$endDate"/>
+									</conditions>
+									<tabs>
+										<tab targetId="startDate" message="TIME_DISORDER"/>
+										<tab targetId="endDate" message="TIME_DISORDER"/>
+									</tabs>
+								</check>
+							</checks>
+							<results>
+								<result operator="set" targetId="startDate" value="$startDate"></result>
+								<result operator="set" targetId="endDate" value="$endDate"></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="8" describe="autocomplete">
+					<list id="autocomplete" sql="Turnover.searchSupplierList">
+						<params>
+							<param key="searchSupplier" value="$autoValue"></param>
+						</params>
+					</list>
+				</cmd>
+			</cmds>
+		</disp>
+		
+		<!-- 库存流水报表查询画面 -->
+		<disp code="020901" class="abstractHandlerItem" jsp="/WEB-INF/jsp/disp/turnover/turnover_report.jsp">
+			<cmbs>
+				<cmb targetId="dateFormat">
+					<option label="请选择..." value=""/>
+					<option label="年报" value="'yyyy'"/>
+					<option label="月报" value="'yyyy-mm'"/>
+					<option label="日报" value="'yyyy-mm-dd'"/>
+				</cmb>
+				<cmb targetId="type">
+					<option label="请选择..." value=""/>
+					<option label="原辅材料" value="0"/>
+					<option label="备品备件" value="1"/>
+				</cmb>
+				<cmb targetId="parentType">
+					<option label="请选择..." value=""/>
+				</cmb>
+				<cmb targetId="childType">
+					<option label="请选择..." value=""/>
+				</cmb>
+			</cmbs>
+			<cmds>
+				<cmd code="1">
+					<list sql="Turnover.getAllTurnoverInfoByChar">
+						<params>
+							<param key="dateFormat" value="'yyyy-mm-dd'">
+								<conditions>
+									<condition operator="empty">
+										<compareSource value="$dateFormat"></compareSource>
+									</condition>
+								</conditions>
+							</param>
+						</params>
+					</list>
+				</cmd>
+				<cmd code="2" describe="生成类型1级菜单">
+					<items>
+						<item list="true" sql="MaterialType.getParentTypeForCmb" targetId="parentType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="3" describe="生成类型2级菜单">
+					<items>
+						<item list="true" sql="MaterialType.getChildTypeForCmb" targetId="childType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="6" describe="菜单初始化">
+					<items>
+						<item list="true" targetId="parentType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+			</cmds>
+		</disp>
+		<disp code="010013" class="abstractHandlerItem" jsp="/WEB-INF/jsp/disp/turnover/turnover_detail.jsp">
+			<cmbs>
+				<cmb targetId="parentType" sql="MaterialType.getParentTypeForCmb">
+				</cmb>
+				<cmb targetId="childType" sql="MaterialType.getChildTypeForCmb">
+					<option label="请选择..." value=""/>
+				</cmb>
+			</cmbs>
+			<cmds>
+				<cmd code="1" describe="根据ID查询详细信息">
+					<items>
+						<item sql="Turnover.getTurnoverItemInfo">
+							<results>
+								<result operator="set" targetId="parentType" value="#PARENT_TYPE_ID"></result>
+								<result operator="set" targetId="childType" value="#TYPE_ID"></result>
+								<result operator="set" targetId="supplier" value="#SUPPLIER"></result>
+								<result operator="set" targetId="orderno" value="#ORDERNO"></result>
+								<result operator="set" targetId="turnoverNumber" value="#TURNOVER_NUMBER"></result>
+								<result operator="set" targetId="price" value="#TURNOVER_PRICE"></result>
+								<result operator="set" targetId="effective_date" value="#EFFECTIVE_DATE"></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="2" describe="生成原辅材料类型2级菜单">
+					<items>
+						<item list="true" sql="MaterialType.getChildMaterialTypeForCmb" targetId="childType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="3" describe="生成备品备件类型2级菜单">
+					<items>
+						<item list="true" sql="SpareType.getChildSpareTypeForCmb" targetId="childType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="4" check="1" describe="更新数据">
+					<updates>
+						<update sql="Turnover.updateTurnoverItemInfo">
+							<params>
+								<param key="childType" value="$parentType">
+									<conditions>
+										<condition operator="empty" property="$childType"/>
+									</conditions>
+								</param>
+								<param key="orderNo" value="$orderNo"></param>
+								<param key="supplier" value="$supplier"></param>
+								<param key="turnoverNumber" value="$turnoverNumber">
+									<formats>
+										<format method="countDecimalFormat"/>
+									</formats>
+								</param>
+								<param key="price" value="$price">
+									<formats>
+										<format method="priceDecimalFormat"/>
+									</formats>
+								</param>
+								<param key="effective_date" value="$effective_date"></param>
+							</params>
+						</update>
+					</updates>
+				</cmd>
+			</cmds>
+		</disp>
+	</disps>
+</request>

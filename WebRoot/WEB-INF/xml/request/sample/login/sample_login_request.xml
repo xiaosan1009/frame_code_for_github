@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+##################################################################
+・Hanlder 在spring中的映射名（一般：类名首字母小写）
+　handlerclass
+・方法名
+　method
+・JSP文件名（默认：共通）
+　lang = "ja" → 日本语
+　lang = "zh_CN" → 中国语
+  client 客户端类型（0：通用；1：ajax；2：flex；3：android）
+・退出（默认：自动登出）
+　logout = "0"→不自动登出
+・请求种类
+　request = "servlet"→servlet请求
+　【注意1】cmdcode="0"和cmdcode="100"的时候为固定的servlet
+・JSP迁移（默认：迁移）
+　forward = "0"→JSP不迁移
+ check = "1"→需要共通验证
+・特定的画面号
+ dispcode = 
+ 	000000 ~ 001000 共通
+ 	001001 ~ 009999 插件
+ 	100001 ~ 999999 一般性机能
+ 	
+・特定的方法号
+　cmdcode = 
+
+	0：初期表示
+	
+	99：分页表示
+	
+	100、101：打印画面
+	
+	201~205：Chart表示
+	
+	400：下载处理
+
+	500：上传处理
+
+	1001：自动填充处理
+	
+	9999:插件信息取得
+
+##################################################################
+-->
+
+<request xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../request.xsd">
+	<disps>
+		<disp code="800301" class="abstractHandlerItem" jsp="/WEB-INF/jsp/disp/flexSample/wineShopSys.jsp" logout="0"></disp>
+		<!-- sample 登录画面 -->
+		<disp code="800101" class="sampleLoginHandle" describe="sample 登录画面">
+			<cmds>
+				<cmd code="3" check="1" forward="800201">
+					<items>
+						<item sql="SampleLogin.checkUserAvailable">
+							<checks>
+								<check sql="SampleLogin.checkUserAvailable">
+									<params>
+										<param key="userName" value="$id_0001"></param>
+										<param key="passWord" value="$id_0002"></param>
+									</params>
+									<conditions>
+										<condition operator="notEmpty">
+											<compareSource value="#Result"></compareSource>
+										</condition>
+									</conditions>
+									<tabs>
+										<tab targetId="id_0001" message="INPUT_ERROR"/>
+										<tab targetId="id_0002" message="INPUT_ERROR"/>
+									</tabs>
+								</check>
+							</checks>
+							<params>
+								<param key="userName" value="$id_0001"></param>
+								<param key="passWord" value="$id_0002"></param>
+							</params>
+						</item>
+					</items>
+				</cmd>
+			</cmds>
+		</disp>
+		<disp code="100002" class="abstractHandlerItem">
+			<cmbs>
+				<cmb targetId="id_0005" value="value" label="cmb_text" count="10" start="1"></cmb>
+			</cmbs>
+			<cmds>
+				<cmd code="3">
+					<list sql="SampleLogin.selectUserInfo" targetId="list1">
+						<results>
+							<result operator="set" targetId="userName" value="#USERNAME"></result>
+							<result operator="set" targetId="userPassWord" value="#USERPASSWORD"></result>
+							<result operator="set" targetId="userScope" value="#CREATEDATE"></result>
+							<result operator="set" targetId="id" value="#ID"></result>
+						</results>
+					</list>
+				</cmd>
+			</cmds>
+		</disp>
+		<disp code="800401" class="sampleServletHandle">
+			<cmds>
+				<cmd code="0" jsp="/WEB-INF/jsp/disp/flexSample/testServlet.jsp">
+					<servlet method="testServlet"/>
+				</cmd>
+			</cmds>
+		</disp>
+	</disps>
+
+</request>
