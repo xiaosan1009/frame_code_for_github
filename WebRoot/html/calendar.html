@@ -1,0 +1,107 @@
+<html>
+<head>
+<base target="_self">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>calendar</title>
+<link type="text/css" rel="stylesheet" href="../css/frame/formStyle.css">
+<script type="text/javascript" src="../js/frame/jKing/tools/jKing-calendar.js"></script>
+<script type="text/javascript">
+<!--
+
+function pageOpen(name, date) {
+	if ("back" == name) {
+		window.returnValue = "closed";
+		window.close();
+	}
+	if ("blank" == name) {
+		window.returnValue = "blank";
+		window.close();
+	}
+	if ("date" == name) {
+		window.returnValue = date;
+		window.close();
+	}
+}
+// -->
+</script>
+<style>
+table.calendarTab { /* 防止画面崩溃 */
+	table-layout: fixed;
+	border: 1px solid #000000;
+	border-collapse: collapse;
+	margin-left: 10;
+	margin-right: 10;
+}
+
+table.calendarTab tr {
+	height: 30px;
+}
+
+table.calendarTab td {
+	border: 1px solid #000000;
+	padding: 3px;
+}
+table.tableNoBorder {
+	border: 0;
+}
+
+table.tableNoBorder td {
+	border: 0;
+}
+</style>
+</head>
+
+<body leftmargin="10" topmargin="10" marginwidth="0" marginheight="0" bgcolor="#f8f8f8">
+<script type="text/javascript">
+<!--
+	var getYear = "";
+	var getMonth = "";
+	var locData = window.location.search.substr(1);
+	
+	
+	var locArr = locData.split("&");
+	var parArr = new Array(1);
+	
+	for (var i = 0; i < locArr.length; i++) {
+		parArr = locArr[i].split("=");
+		if (parArr[0] == "year") {
+			getYear = parArr[1];
+		}
+		if (parArr[0] == "month") {
+			getMonth = parArr[1];
+		}
+	}
+	
+	setDate(getYear, getMonth);
+	setWeekType(0);
+	document.write("<table width=\"190\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"font12\" style=\"margin-left: 10\">\n");
+	document.write("	<tr>\n");
+	document.write("		<td align=\"left\">\n");
+	prevYearLink("<<");
+	document.write("		&nbsp;&nbsp;");
+	prevMonthLink("<");
+	document.write("		</td>\n");
+	document.write("		<td align=\"right\">\n");
+	nextMonthLink(">");
+	document.write("		&nbsp;&nbsp;");
+	nextYearLink(">>");
+	document.write("		</td>\n");
+	document.write("	</tr>\n");
+	document.write("</table>\n");
+	dispData = null;
+	createCarendarTable(20, 20, "calendarTab", 1);
+// -->
+</script>
+<div style="position:absolute; bottom:20px;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center">
+			<input type="button" value="清空" class="btn btn-submit" onClick="JavaScript:pageOpen('blank')">
+			<input type="button" value="关闭" class="btn btn-submit" onClick="JavaScript:pageOpen('back')">
+		</td>
+	</tr>
+</table>
+</div>
+
+</body>
+</html>
