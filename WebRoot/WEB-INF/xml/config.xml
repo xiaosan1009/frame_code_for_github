@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- 环境设定 -->
+<configuration >
+ <settings>
+  <!-- 
+  	引擎共通参数设定
+  	debug：如果为true，则session过滤器失效，用于局部调试。
+  	log：如果为true，则打印日志，否则不打印。
+  	frameLog：如果为true，则打印引擎日志，否则不打印。
+  	logTime：如果为true，则在日志后加入打印的时间，否则不打印时间。
+  	logLevel：打印日志的等级，0为全部等级，1为info及以上等级，2为fatal及以上等级，3为error等级，log4j的配置文件优先级更高。
+  	memcachedKey：memcached的共通key，每个工程建立自己的key，用于与其他工程区别开。
+  	md5Key：md5的加密key，此key是在md5的基础上再加密。
+  	absolutePath：如果此属性无值，则默认工程的绝对路径，如果有值，则采用此绝对路径。
+  -->
+  <frame 
+  	debug="false" 
+  	log="true" 
+  	frameLog="true" 
+  	logTime="true" 
+  	logLevel="1" 
+  	memcachedKey="smeltery" 
+  	md5Key="cn.com.smeltery" 
+  	absolutePath="" 
+  />
+  
+  <!-- 语言种类 -->
+  <lang type="zh_CN" />
+  
+  <!-- 
+  	excel功能共通设定
+  	maxSize：如果excel中设置的内容（cell * 数据条数）大于属性值，将生成zip文件
+  	限定：autoZipEnabled为true的时候，并且list标签的机能
+  -->
+  <excel maxSize="30" autoZipEnabled="true" />
+  
+  <!-- 画面颜色设定 -->
+  <backcolor body="#cccccc" item="{ffffff}" edit="#00ffff" /><!-- 控件背景色 -->
+  <columnback color="#e9f1f5" altcolor="#ffffff" /><!-- 表格背景色 -->
+  <inputerr charcolor="#ff0000" bgcolor="{errorBg}" /><!-- 输入错误颜色 -->
+  
+  <!-- ftp -->
+  <ftp url="127.0.0.1" user="king" password="123" path="/ftp/" size="1024" encoding="GB2312" address="" />
+  
+  <!-- socket -->
+  <socket port="20340" security="843" enable="false"/>
+  
+  <!-- 
+  	对应文件上传功能
+  	localhost：配置应用服务器地址
+  	auto：为true的时候，自动获取服务器url，url项无效[不建议使用]
+  	path:服务器图片的上传文件夹，如果没有则从在工程根目录下生成图片。
+  -->
+  <upload url="http://192.168.54.91:8080" auto="false" path="upload"/>
+  
+  <!-- 
+  	对客户端类型请求的控制，如果对应属性的值为[requestRefuse]，则该种客户端的请求被限制。
+  	ajax：对应web请求，如果为空则不控制，如果不为空，则判断请求中的[requestChecker]参数是否等于为此属性值。
+  	flex：对应flex请求，如果为空则不控制，如果不为空，则判断请求中的[requestChecker]参数是否等于为此属性值。
+  	android：对应android请求，如果为空则不控制，如果不为空，则判断请求中的[requestChecker]参数是否等于为此属性值。
+  	enable：整体性控制，如果为true，前边相应的控制属性才有效，为false，整体控制无效，对客户端的请求不做控制。
+  	请求验证key android:19eMTClient 
+  -->
+  <requestChecker ajax="requestRefuse" flex="" android="2ba1ef51774ee22e410037040cd239a3" enable="false"/>
+  
+  <!-- 
+  	对浏览器类型的控制。
+  	userAgent：对请求中包含浏览器信息关键字的设置，多个属性用[|]分割，如果不设置则对浏览器不做限制，
+  			   如果设置了值，则请求中包含了设置了的值，请求才有效。
+  	enable：整体性控制，如果为true，前边相应的控制属性才有效，为false，整体控制无效，对浏览器类型不做控制。
+  -->
+  <reqHeaderChecker userAgent="Mozilla/4.0" enable="false"/>
+  
+ </settings>
+
+</configuration>

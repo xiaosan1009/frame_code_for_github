@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+##################################################################
+・Hanlder 在spring中的映射名（一般：类名首字母小写）
+　handlerclass
+・方法名
+　method
+・JSP文件名（默认：共通）
+　lang = "ja" → 日本语
+　lang = "zh_CN" → 中国语
+  client 客户端类型（0：通用；1：ajax；2：flex；3：android）
+・退出（默认：自动登出）
+　logout = "0"→不自动登出
+・请求种类
+　request = "servlet"→servlet请求
+　【注意1】cmdcode="0"和cmdcode="100"的时候为固定的servlet
+・JSP迁移（默认：迁移）
+　forward = "0"→JSP不迁移
+ check = "1"→需要共通验证
+・特定的画面号
+ dispcode = 
+ 	000000 ~ 001000 共通
+ 	001001 ~ 009999 插件
+ 	100001 ~ 999999 一般性机能
+ 	
+・特定的方法号
+　cmdcode = 
+
+	0：初期表示
+	
+	99：分页表示
+	
+	100、101：打印画面
+	
+	201~205：Chart表示
+	
+	400：下载处理
+
+	500：上传处理
+
+	1001：自动填充处理
+	
+	9999:插件信息取得
+
+##################################################################
+-->
+
+<request xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../request.xsd">
+	<disps>
+		<!-- 用户登录 -->
+		<disp code="000001" class="loginHandle" describe="登录画面" jsp="/WEB-INF/jsp/disp/login/login.jsp" logout="0">
+			<cmds>
+				<cmd code="1" describe="用户登录" logout="0" forward="000002" check="1">
+					<items>
+						<item sql="Login.checkUserAvailable">
+							<checks>
+								<check sql="Login.checkUserAvailable">
+									<params>
+										<param key="userName" value="$username"></param>
+										<param key="passWord" value="$password"></param>
+									</params>
+									<conditions>
+										<condition operator="notEmpty">
+											<compareSource value="#Result"></compareSource>
+										</condition>
+									</conditions>
+									<tabs>
+										<tab targetId="username" message="INPUT_ERROR"/>
+										<tab targetId="password" message="INPUT_ERROR"/>
+									</tabs>
+								</check>
+							</checks>
+							<params>
+								<param key="userName" value="$username"></param>
+								<param key="passWord" value="$password"></param>
+							</params>
+						</item>
+					</items>
+				</cmd>
+			</cmds>
+		</disp>
+	</disps>
+
+</request>

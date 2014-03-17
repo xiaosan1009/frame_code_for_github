@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+##################################################################
+・Hanlder 在spring中的映射名（一般：类名首字母小写）
+　handlerclass
+・方法名
+　method
+・JSP文件名（默认：共通）
+　lang = "ja" → 日本语
+　lang = "zh_CN" → 中国语
+  client 客户端类型（0：通用；1：ajax；2：flex；3：android）
+・退出（默认：自动登出）
+　logout = "0"→不自动登出
+・请求种类
+　request = "servlet"→servlet请求
+　【注意1】cmdcode="0"和cmdcode="100"的时候为固定的servlet
+・JSP迁移（默认：迁移）
+　forward = "0"→JSP不迁移
+ check = "1"→需要共通验证
+・特定的画面号
+ dispcode = 
+ 	000000 ~ 001000 共通
+ 	001001 ~ 009999 插件
+ 	100001 ~ 999999 一般性机能
+ 	
+・特定的方法号
+　cmdcode = 
+
+	0：初期表示
+	
+	99：分页表示
+	
+	100、101：打印画面
+	
+	201~205：Chart表示
+	
+	400：下载处理
+
+	500：上传处理
+
+	1001：自动填充处理
+	
+	9999:插件信息取得
+
+##################################################################
+-->
+
+<request xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../request.xsd">
+	<disps>
+		<!-- 原辅材料消耗录入画面 -->
+		<disp code="030200" class="filialeTurnoverHandle" describe="原辅材料消耗录入画面" jsp="/WEB-INF/jsp/disp/filiale/consume_filiale_material_turnover.jsp">
+			<cmbs>
+				<cmb targetId="parentType" sql="MaterialType.getParentMaterialTypeForCmb">
+					<option label="请选择..." value=""/>
+				</cmb>
+				<cmb targetId="childType">
+					<option label="请选择..." value=""/>
+				</cmb>
+				<cmb targetId="filiale" sql="Filiale.getAllFilialeInfoForCmb">
+					<option label="请选择..." value=""/>
+				</cmb>
+			</cmbs>
+			<cmds>
+				<cmd code="1" check="2" describe="原辅材料出库流水信息添加" checkIndex="indexs">
+					<updates success="REGISTER_SUCCESS" error="REGISTER_ERROR" id="materialConsume">
+						<update sql="FilialeTurnover.consumeMaterialTurnoverInfo">
+							<checks>
+								<check>
+									<conditions>
+										<condition operator="＜=">
+											<compareSource value="$outNumber"></compareSource>
+											<compareTarget value="$number"></compareTarget>
+										</condition>
+									</conditions>
+									<tabs>
+										<tab targetId="outNumber" message="INPUT_ERROR"/>
+									</tabs>
+								</check>
+							</checks>
+							<params>
+								<param key="turnoverDate" value="%sysdate%">
+									<conditions>
+										<condition operator="empty" property="$turnoverDate"/>
+									</conditions>
+								</param>
+							</params>
+							<results>
+								<result operator="set" targetId="turnoverDate" value=""></result>
+							</results>
+						</update>
+					</updates>
+				</cmd>
+				<cmd code="2" describe="生成类型2级菜单">
+					<items>
+						<item list="true" sql="MaterialType.getChildMaterialTypeForCmb" targetId="childType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="3" describe="查询所有批次的入库信息" jsp="/WEB-INF/jsp/disp/filiale/consume_filiale_material_turnover_list1.jsp">
+					<list sql="FilialeTurnover.getTurnoverInfo">
+						<results>
+							<result operator="set" targetId="number" value="#NUM"></result>
+							<result operator="set" targetId="numLabel" value="#NUM_LABEL"></result>
+							<result operator="set" targetId="batch" value="#BATCH"></result>
+							<result operator="set" targetId="orderNo" value="#ORDERNO"></result>
+							<result operator="set" targetId="supplier" value="#SUPPLIER"></result>
+							<result operator="set" targetId="deliverednoteno" value="#DELIVEREDNOTENO"></result>
+							<result operator="set" targetId="parentTypeId" value="#PARENT_TYPE_ID"></result>
+							<result operator="set" targetId="typeId" value="#TYPE_ID"></result>
+							<result operator="set" targetId="filialeId" value="#FILIALE_ID"></result>
+							<result operator="set" targetId="filialeName" value="#FILIALE_NAME"></result>
+							<result operator="set" targetId="price" value="#TURNOVER_PRICE"></result>
+							<result operator="set" targetId="parentTypeName" value="#PARENT_TYPE_NAME"></result>
+							<result operator="set" targetId="typeName" value="#TYPE_NAME"></result>
+							<result operator="set" targetId="price" value="#TURNOVER_PRICE"></result>
+							<result operator="set" targetId="turnoverDate" value="#TURNOVER_DATE"></result>
+						</results>
+					</list>
+				</cmd>
+				<cmd code="4" describe="验证查询条件">
+					<items>
+						<item>
+							<checks>
+								<check>
+									<conditions>
+										<condition operator="＜=" property="$startDate" value="$endDate"/>
+									</conditions>
+									<tabs>
+										<tab targetId="startDate" message="TIME_DISORDER"/>
+										<tab targetId="endDate" message="TIME_DISORDER"/>
+									</tabs>
+								</check>
+							</checks>
+							<results>
+								<result operator="set" targetId="startDate" value="$startDate"></result>
+								<result operator="set" targetId="endDate" value="$endDate"></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="5" describe="autocomplete">
+					<list id="autocomplete" sql="Turnover.searchSupplierList">
+					</list>
+				</cmd>
+			</cmds>
+		</disp>
+		
+		<!-- 备品备件消耗录入画面 -->
+		<disp code="030300" class="filialeTurnoverHandle" describe="备品备件消耗录入画面" jsp="/WEB-INF/jsp/disp/filiale/consume_filiale_spare_turnover.jsp">
+			<cmbs>
+				<cmb targetId="parentType" sql="SpareType.getParentSpareTypeForCmb">
+					<option label="请选择..." value=""/>
+				</cmb>
+				<cmb targetId="childType">
+					<option label="请选择..." value=""/>
+				</cmb>
+				<cmb targetId="filiale" sql="Filiale.getAllFilialeInfoForCmb">
+					<option label="请选择..." value=""/>
+				</cmb>
+			</cmbs>
+			<cmds>
+				<cmd code="1" check="2" describe="原辅材料出库流水信息添加" checkIndex="indexs">
+					<updates success="REGISTER_SUCCESS" error="REGISTER_ERROR" id="spareConsume">
+						<update sql="FilialeTurnover.consumeSpareTurnoverInfo">
+							<checks>
+								<check>
+									<conditions>
+										<condition operator="＜=">
+											<compareSource value="$outNumber"></compareSource>
+											<compareTarget value="$number"></compareTarget>
+										</condition>
+									</conditions>
+									<tabs>
+										<tab targetId="outNumber" message="INPUT_ERROR"/>
+									</tabs>
+								</check>
+							</checks>
+							<params>
+								<param key="turnoverDate" value="%sysdate%">
+									<conditions>
+										<condition operator="empty" property="$turnoverDate"/>
+									</conditions>
+								</param>
+							</params>
+							<results>
+								<result operator="set" targetId="turnoverDate" value=""></result>
+							</results>
+						</update>
+					</updates>
+				</cmd>
+				<cmd code="2" describe="生成类型2级菜单">
+					<items>
+						<item list="true" sql="SpareType.getChildSpareTypeForCmb" targetId="childType">
+							<results constant="true">
+								<result operator="set" targetId="value" value=""></result>
+								<result operator="set" targetId="label" value="请选择..."></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="3" describe="查询所有批次的入库信息" jsp="/WEB-INF/jsp/disp/filiale/consume_filiale_spare_turnover_list1.jsp">
+					<list sql="FilialeTurnover.getTurnoverInfo">
+						<results>
+							<result operator="set" targetId="number" value="#NUM"></result>
+							<result operator="set" targetId="numLabel" value="#NUM_LABEL"></result>
+							<result operator="set" targetId="batch" value="#BATCH"></result>
+							<result operator="set" targetId="orderNo" value="#ORDERNO"></result>
+							<result operator="set" targetId="supplier" value="#SUPPLIER"></result>
+							<result operator="set" targetId="deliverednoteno" value="#DELIVEREDNOTENO"></result>
+							<result operator="set" targetId="parentTypeId" value="#PARENT_TYPE_ID"></result>
+							<result operator="set" targetId="typeId" value="#TYPE_ID"></result>
+							<result operator="set" targetId="effectiveDate" value="#EFFECTIVE_DATE"></result>
+							<result operator="set" targetId="filialeId" value="#FILIALE_ID"></result>
+							<result operator="set" targetId="filialeName" value="#FILIALE_NAME"></result>
+							<result operator="set" targetId="price" value="#TURNOVER_PRICE"></result>
+							<result operator="set" targetId="parentTypeName" value="#PARENT_TYPE_NAME"></result>
+							<result operator="set" targetId="typeName" value="#TYPE_NAME"></result>
+							<result operator="set" targetId="price" value="#TURNOVER_PRICE"></result>
+							<result operator="set" targetId="turnoverDate" value="#TURNOVER_DATE"></result>
+						</results>
+					</list>
+				</cmd>
+				<cmd code="4" describe="验证查询条件">
+					<items>
+						<item>
+							<checks>
+								<check>
+									<conditions>
+										<condition operator="＜=" property="$startDate" value="$endDate"/>
+									</conditions>
+									<tabs>
+										<tab targetId="startDate" message="TIME_DISORDER"/>
+										<tab targetId="endDate" message="TIME_DISORDER"/>
+									</tabs>
+								</check>
+							</checks>
+							<results>
+								<result operator="set" targetId="startDate" value="$startDate"></result>
+								<result operator="set" targetId="endDate" value="$endDate"></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+				<cmd code="5" describe="autocomplete">
+					<list id="autocomplete" sql="Turnover.searchSupplierList">
+					</list>
+				</cmd>
+			</cmds>
+		</disp>
+		
+		<!-- 消耗及维修查询画面 -->
+		<disp code="030500" class="abstractHandlerItem" describe="消耗及维修查询画面" jsp="/WEB-INF/jsp/disp/filiale/query_consume_maintain_info.jsp">
+			<cmbs>
+				<cmb targetId="filiale" sql="Filiale.getAllFilialeInfoForCmb">
+					<option label="fmt:FM_PL_SELECT" value=""/>
+				</cmb>
+				<cmb targetId="searchType">
+					<option label="fmt:FM_PL_SELECT" value=""/>
+					<option label="fmt:FS_0016" value="1"/>
+					<option label="fmt:FS_0017" value="0"/>
+				</cmb>
+				<cmb targetId="type">
+					<option label="fmt:FM_PL_SELECT" value=""/>
+					<option label="fmt:FS_0010" value="0"/>
+					<option label="fmt:FS_0011" value="1"/>
+					<option label="fmt:FS_0012" value="2"/>
+					<option label="fmt:FS_0013" value="3"/>
+				</cmb>
+			</cmbs>
+			<cmds>
+				<cmd code="1" jsp="/WEB-INF/jsp/disp/filiale/query_consume_maintain_info_list1.jsp">
+					<list sql="FilialeTurnover.getConsumeTurnoverInfo" pageSize="10">
+						<results>
+							<result operator="set" targetId="filialeName" value="#FILIALE_NAME"></result>
+							<result operator="set" targetId="priceSum" value="#PRICE_SUM"></result>
+							<result operator="set" targetId="turnoverDate" value="#TURNOVER_DATE"></result>
+							<result operator="set" targetId="type" value="fmt:FS_0010">
+								<conditions>
+									<condition operator="==" property="#TYPE" value="0"/>
+								</conditions>
+							</result>
+							<result operator="set" targetId="type" value="fmt:FS_0011">
+								<conditions>
+									<condition operator="==" property="#TYPE" value="1"/>
+								</conditions>
+							</result>
+							<result operator="set" targetId="type" value="fmt:FS_0012">
+								<conditions>
+									<condition operator="==" property="#TYPE" value="2"/>
+								</conditions>
+							</result>
+							<result operator="set" targetId="type" value="fmt:FS_0013">
+								<conditions>
+									<condition operator="==" property="#TYPE" value="3"/>
+								</conditions>
+							</result>
+						</results>
+					</list>
+				</cmd>
+				<cmd code="2" describe="验证查询条件">
+					<items>
+						<item>
+							<checks>
+								<check>
+									<conditions>
+										<condition operator="＜=" property="$startDate" value="$endDate"/>
+									</conditions>
+									<tabs>
+										<tab targetId="startDate" message="TIME_DISORDER"/>
+										<tab targetId="endDate" message="TIME_DISORDER"/>
+									</tabs>
+								</check>
+							</checks>
+							<results>
+								<result operator="set" targetId="startDate" value="$startDate"></result>
+								<result operator="set" targetId="endDate" value="$endDate"></result>
+							</results>
+						</item>
+					</items>
+				</cmd>
+			</cmds>
+		</disp>
+	</disps>
+
+</request>

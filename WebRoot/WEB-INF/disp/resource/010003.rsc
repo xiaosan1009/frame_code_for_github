@@ -1,0 +1,3 @@
+clientName=FS_0001
+clientMail=FS_0004
+clientSex=FS_0005
