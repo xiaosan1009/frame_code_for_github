@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="jar">
+	<property name="jarfilepath" value="com/richClientFrame/**/*.*"/>
+	<property name="propertiesfilepath" value="com/richClientFrame/resource/common/*.properties"/>
+	<property name="javacpath" value="src"/>
+    <property name="businessManager.location" value="."/>
+	<property name="javactopath" value="WebRoot\WEB-INF\classes"/>
+	<property name="jarPath" value="./WebRoot/WEB-INF/lib"/>
+	<target name="jar">
+		<jar destfile="${jarPath}/richClientFrame.jar">
+			<fileset dir="${javactopath}">
+					<include name="${jarfilepath}"/>
+			   </fileset>
+			<fileset dir="${javacpath}">
+				<include name="${propertiesfilepath}"/>
+			</fileset>
+		</jar>
+	</target>
+</project>
