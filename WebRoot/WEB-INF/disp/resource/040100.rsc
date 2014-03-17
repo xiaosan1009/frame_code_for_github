@@ -1,2 +1,0 @@
-topLimit=FS_0004
-floorLimit=FS_0005

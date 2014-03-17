@@ -1,2 +1,0 @@
-filiale=FS_0010
-outNumber=FS_0009

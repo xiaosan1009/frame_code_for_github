@@ -1,4 +1,0 @@
-parentType=FS_0001
-turnoverNumber=FS_0002
-price=FS_0005
-orderNo=FS_0008

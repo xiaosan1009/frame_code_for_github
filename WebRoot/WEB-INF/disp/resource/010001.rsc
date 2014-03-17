@@ -1,4 +1,0 @@
-username=FS_0001
-password=FS_0002
-repassword=FS_0003
-userType=FS_0004
